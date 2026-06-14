@@ -1,0 +1,72 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{geometry}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{titlesec}
+
+% Definición de márgenes y geometría
+\geometry{
+    a4paper,
+    left=25mm,
+    right=25mm,
+    top=25mm,
+    bottom=25mm
+}
+
+% Colores elegantes para los títulos
+\definecolor{primary}{RGB}{31, 78, 121}    % Azul marino
+\definecolor{secondary}{RGB}{90, 90, 90}   % Gris oscuro
+
+% Configuración de títulos estilo reporte limpio
+\titleformat{\section}
+  {\color{primary}\normalfont\Large\bfseries}
+  {\thesection}{1em}{}[{\color{primary}\titlerule[1pt]}]
+
+\titleformat{\subsection}
+  {\color{secondary}\normalfont\large\bfseries}
+  {\thesubsection}{1em}{}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{8pt}
+
+\begin{document}
+
+% Encabezado del documento
+\begin{center}
+    {\color{primary}\LARGE\bfseries Formulario de prestaciones} \\[0.2cm]
+    {\color{secondary}\large Daniel Rodulfo 31725032} \\[0.4cm]
+    \rule{\linewidth}{0.5mm}
+\end{center}
+
+\vspace{0.5cm}
+
+\section{Fórmulas Principales}
+
+
+\subsection{1. Prestaciones (Rendimiento)}
+\begin{equation}
+    \text{Prestaciones} = \frac{1}{\text{Tiempo de Ejecución}}
+\end{equation}
+
+\subsection{2. Tiempo de Ejecución (Ecuación Básica)}
+\begin{equation}
+    \text{Tiempo de Ejecución} = \frac{\text{Ciclos de Reloj}}{\text{Frecuencia de Reloj}}
+\end{equation}
+
+\subsection{3. Ciclos de Reloj de la CPU}
+\begin{equation}
+    \text{Ciclos de Reloj} = \text{Número de Instrucciones} \times \text{CPI}
+\end{equation}
+
+\subsection{4. Ecuación reformulada del Rendimiento de CPU}
+
+\begin{equation}
+    \text{Tiempo de Ejecución} = \frac{\text{Número de Instrucciones} \times \text{CPI}}{\text{Frecuencia de Reloj}}
+\end{equation}
+
+\vspace{0.5cm}
+\end{document}
