@@ -1,0 +1,34 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+
+\title{practica 1}
+\author{Daniel Rodulfo 31725032}
+
+\begin{document}
+
+\maketitle
+
+\section{preguntas}
+
+\section{Implementación de la Recursividad en MIPS32 y Papel de la Pila (\$sp)}
+Los procedimientos se llaman a si mismos alterando los valores de los registros de argumentos(\$a0 - \$a3), la pila guarda los valores previos de los argumentos(que sean necesarios) asi como las direcciones de retorno (\$ra), para una vez que alcanzado el caso base pueda devolverse y realizar las operaciones pendientes
+
+\section{Riesgos de Desbordamiento y Estrategias de Mitigación}
+En la version recursiva existe el riesgo de que la pila se desborde si el numero a evaluar es muy grande, para mitigarlo se puede tratar de disminuir los valores que se guardan en la pila en cada llamada(haciendo una recursion de cola) o simplemente escoger una version iterativa en caso de poderse
+
+\section{Diferencias entre la Implementación Iterativa y Recursiva}
+ la implementacion recursiva hace uso de la pila activamente, ademas por lo menos en este caso la version iterativa tambien resulta en un codigo mas corto con un menor numero de instrucciones siendo por lo tanto mas legible, ademas de que al no tener accesos y con el menor numero de instrucciones es mas eficiente
+
+\section{Diferencias entre los Ejemplos Académicos del Libro y un Ejercicio Operativo}
+El libro ignora las directivas que el programa funcione correctamente, a priori se centra mas en la realizacion del algoritmo
+
+\section{Tutorial de Ejecución Paso a Paso en MARS}
+se crea o se abre un archivo .asm, se escribe el codigo, se ensambla y luego se ejecuta
+
+\section{Justificación del Enfoque (Iterativo vs. Recursivo)}
+yo elegiria el enfoque iterativo por un laod el codigo queda mas corto y resulta mas facil de entender, ademas de ser mas eficiente por no tener accesos a la memoria, trabajando solo con los registros
+
+\section{Análisis y Discusión de los Resultados}
+Normalmente en alto nivel(en c) los algoritmos recursivos suelen tener codigos mas cortos, quizas no sea el caso para todos, pero por lo mnenos en este algoritmo la version recursiva en mips resulto ser mas larga en codigo que la recursiva.
+
+\end{document}
