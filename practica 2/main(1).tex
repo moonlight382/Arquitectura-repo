@@ -1,0 +1,58 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+
+\title{practica 2}
+\author{Daniel Rodulfo}
+\date{August 2026}
+
+\begin{document}
+
+\maketitle
+
+\section*{Cuestionario de Evaluación}
+
+\begin{enumerate}
+    \item \textbf{¿Qué diferencias existen entre registros temporales (\$t0–\$t9) y registros guardados (\$s0–\$s7) y cómo se aplicó esta distinción en la práctica?}
+    Para los registros (\$s0–\$s7) los procedimientos estan obligados a preservar sus valores previos en caso de que los tengan que usar, mientras que para los registros temporales (\$t0–\$t9) no. En la practica se usaron rutinas que a su vez llaman a otras rutinas, cuando se requeria conservar un valor este se guardaba en un registro guardado (\$s0–\$s7)haciendo mas facil el seguimiento de adonde iban los datos.
+    
+    \item \textbf{¿Qué diferencias existen entre los registros \$a0–\$a3, \$v0–\$v1, \$ra y cómo se aplicó esta distinción en la práctica?}
+    los registro \$a0–\$a3 son los registros de argumentos, empleado para pasarle a los procedimientos los valores con los que estos trabajaran, los registros \$v0–\$v1 son los registros de retorno de valores, estos fueron empleados para los procedimientos que necesitan retornar valores, El registro \$ra es el registro de direccion de retorno, es el registro que se usa para guardar la direccion exacta de retorno cuando se usa un procedimiento. Los registros de argumentos se usaron para proporcionar la direccion de los vectores asi de como el intervalo del mismo que se esta evaluando, los registros de retorno solo se usaron en el algoritmo quicksort para retornar el indice donde se debe colocar el pivote y el registro de retorno \$ra fue usado para ampliamente para guardar las direcciones de retorno de las distinas etapas de la recursion de las funciones utilizadas.
+    
+    \item \textbf{¿Cómo afecta el uso de registros frente a memoria en el rendimiento de los algoritmos de ordenamiento implementados?}
+    El manejo de los datos cuando estan en los registros siempre es mas rapido,qucksort se beneficia de esto en la etapa de de reordenamiento de las particiones del vector, pero para el caso de mergesort se tiene que en la fase de mezcla tiene que acceder constantemente a la memoria debido a que usa vectores auxiliares, por lo que su rendimiento para casos promedio se ve limitado.
+    
+    \item \textbf{¿Qué impacto tiene el uso de estructuras de control (bucles anidados, saltos) en la eficiencia de los algoritmos en MIPS32?}
+    Los ciclos multiplican el numero de instrucciones de un algoritmo y los saltos pueden ocasionar riesgos de control que pueden ralentizar la ejecucion.
+    
+    \item \textbf{¿Cuáles son las diferencias de complejidad computacional entre el algoritmo Quicksort y el algoritmo Mergesort? ¿Qué implicaciones tiene esto para la implementación en un entorno MIPS32?}
+    En complejidad temporal ambos son(en el mejor de los caso) O(nlog(n)), pero el quicksort si el pivote es escogido incorrectamente puede llegar a ser o(n\^2), pero en cuanto al uso de espacio mergesort es mas exigente, ya que utiliza vectores extra para reordenar los elementos, y por lo mismo tiene mas llamadas a acceso de memoria, tambien de forma individual tiene muchas mas instrucciones que quicksort, por lo que quicksort para casos promedio deberia ser mas rapido en tiempo y mas eficiente en espacio.
+    \item \textbf{¿Cuáles son las fases del ciclo de ejecución de instrucciones en la arquitectura MIPS32 (camino de datos)? ¿En qué consisten?}
+    Primero se obtiene el contador del programa, luego se accede al banco de instruccion y se usando el contador como la direccion de la instruccion siguiente,tambien se aumente el contador en 4, la instruccion se decodifica y luego se pasa al banco de registros, luego se accede a la alu para realizar la operacion que corresponda segun la instruccion y por ultimo se termina de ejecutar la instruccion, ya sea un salto(que en dado caso se reemplaza el contador de programa con la nueva direccion del salto), una carga o escritura en memoria o una operacion aritmetica.
+    
+    
+    \item \textbf{¿Qué tipo de instrucciones se usaron predominantemente en la práctica (R, I, J) y por qué?}
+    Tipo I, constantemente es necesario realizar cargas o lecturas a memoria mientras se estan ordenando los elementos del vector
+    \item \textbf{¿Cómo se ve afectado el rendimiento si se abusa del uso de instrucciones de salto (j, beq, bne) en lugar de usar estructuras lineales?}
+    Si se abusa de este tipo de instrucciones, el rendimiento se puede ver ralentizado, esto ya que por la segmentacion para cuando se termina de calcular el salto ya hay otras instruccion en proceso de ejecucion y deben ser paralizadas.
+    
+    \item \textbf{¿Qué ventajas ofrece el modelo RISC de MIPS en la implementación de algoritmos básicos como los de ordenamiento?}
+    Facilita la legibilidad del mismo, las instruccion al ser bastante simples es posible hacer un seguimiento de como se va moviendo la informacion de forma sencilla
+    
+    
+    \item \textbf{¿Cómo se usó el modo de ejecución paso a paso (Step, Step Into) en MARS para verificar la correcta ejecución del algoritmo?}
+    Una vez ensamblado el algoritmo se probo con entradas pequeñas y se utilizo el modo de ejecucion paso a paso para ir verificando los valores que iban tomando los registros y asi asegurar la correcta ejecucion del algoritmo
+    
+    \item \textbf{¿Qué herramienta de MARS fue más útil para observar el contenido de los registros y detectar errores lógicos?}
+    El data segment fue especialmente util para verificar los valores que se iban guardando en los vectores.
+    
+    \item \textbf{¿Cómo puede visualizarse en MARS el camino de datos para una instrucción tipo R? (por ejemplo: add)}
+    Mediante la herramienta mips x-ray es posible visualizarlo
+    \item \textbf{¿Cómo puede visualizarse en MARS el camino de datos para una instrucción tipo I? (por ejemplo: lw)}
+     Mediante la herramienta mips x-ray es posible visualizarlo
+    \item \textbf{Justificar la elección del algoritmo alternativo.}
+    Para casos promedio elegiria quicksort ya que al tener considerablemente menos accesos a memoria que mergesort deberia tender a ser mejor para casos no tan extremos(arreglos muy grandes), paso casos grandes elegiria mergesort por su orden temporal asegura de O(nlog(n))
+    \item \textbf{Análisis y Discusión de los Resultados.}
+    Quicksort y mergesort son los algoritmos de ordenamiento considerados como los mas eficientes, aunque me esperaba que el codigo de mergesort fuera un poco mas extenso que el de quicksort no me imagine que pudiera haber tanta diferencia en la cantidad de instrucciones utilizadas. Considerando la diferencia en cantidad de instrucciones se ve con claridad porque quicksort debe ser mejor para casos promedio.
+\end{enumerate}
+
+\end{document}
