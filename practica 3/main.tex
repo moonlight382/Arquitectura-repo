@@ -1,0 +1,74 @@
+\documentclass[11pt, a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{enumitem}
+
+\title{\textbf{Informe de Arquitectura de Computadores}}
+\author{[Tu Nombre]}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{enumerate}[leftmargin=*, label=\arabic*.]
+    \item Explique cómo se organiza la memoria cuando un sistema utiliza memory-mapped I/O. ¿En qué región de memoria se suelen mapear los dispositivos? ¿Qué implicaciones tiene para las instrucciones lw y sw?
+    
+    \vspace{0.2cm}
+    \textit{Respuesta:Se comparte el mismo espacio de direcciones para abordar tanto la memoria principal como los dispositions de E/S. Se suele mapear la parte alta de las direcciones, cerca del limite maximo de la memoria direccionable, en mips 32 su suele usar la region que va desde 0xA000 0000 hasta 0xBFFF FFFF. Este sistema implica que instrucciones que acceden a la memoria como lw y sw tambien acceden a los registros de los dispositivos que puedan estar mapeados en la misma, esto lleva a que se deba tener cuidado de no alterar los mismos indebidamente .}
+    \vspace{1.5cm}
+
+    \item ¿Cuál es la principal diferencia entre memory-mapped I/O y la entrada/salida por puertos? ¿Qué ventajas y desventajas tiene cada enfoque? ¿Por qué MIPS32 utiliza principalmente memory-mapped I/O?
+    
+    \vspace{0.2cm}
+    \textit{Respuesta: Memory-mapped I/O comparte el espacio de direcciones con la memoria, mientras que la entrada/salida por puertos utiliza un espacio de direcciones aislado de la memoria principal ademas por lo mismo requiere instrucciones extra(in,out) para poder interactuar con los puertos. .
+    Ventajas Memory-mapped I/O: No requiere instrucciones extra.
+    Desventajas Memory-mapped I/O:Consume Espacio de direcciones y demanda cuidado con el acceso a los registros de dispositivos mapeados
+    Ventajas entrada/salida por puertos:No ocupa espacio de memoria y es fácil restringir por privilegio.
+    Desventajas entrada/salida por puertos: Instrucciones especiales y direccionamiento limitado.}
+    \vspace{1.5cm}
+
+    \item En un sistema con memory-mapped I/O: ¿Qué problemas pueden surgir si dos dispositivos usan direcciones solapadas? ¿Cómo se evita este conflicto?
+    
+    \vspace{0.2cm}
+    \textit{Respuesta:Si 2 dispositivos responden a la misma direccion intentaria manejar el bus de datos a la vez, las lecturas devolverian datos corructos y las escrituras llegarian a ambos. Se evita con un mapa de memoria sin solapamiento,decodificadores de selecciones y en sistemas modernos con firnware o sistemas operativos que asignan rangos de operacion a cada dispositivo}
+    \vspace{1.5cm}
+
+    \item ¿Por qué se considera que el memory-mapped I/O simplifica el diseño del conjunto de instrucciones de un procesador? ¿Qué tipo de instrucciones adicionales serían necesarias si se usara E/S por puertos?
+    
+    \vspace{0.2cm}
+    \textit{Respuesta:Ya que con las instrucciones de acceso a memoria y sus modos de direccionamiento funcionan tanto para memoria como para E/S, Mientras que en un sistema de entrada/salida por puertos se necesitarian instrucciones extra(In/out), con variantes por tamaño y aveces por cadena}
+    \vspace{1.5cm}
+
+    \item ¿Qué ocurre a nivel del bus de datos y direcciones cuando el procesador accede a una dirección de memoria que corresponde a un dispositivo? ¿Cómo sabe el hardware que debe acceder a un periférico en lugar de la RAM?
+    
+    \vspace{0.2cm}
+    \textit{Respuesta:La CPU coloca la dirección en el bus de direcciones y activa las señales de control (lectura o escritura). En lectura el dato viaja del dispositivo a la CPU por el bus de datos, y en escritura al revés. Un decodificador compara los bits altos de la dirección: si caen en el rango de un periférico, activa su chip select y desactiva la RAM. El hardware sabe que debe acceder a un periferico por el rango de direcciones en que se encuentra la peticion.}
+    \vspace{1.5cm}
+
+    \item ¿Es posible que un programa normal (sin privilegios) acceda a un dispositivo mapeado en memoria? ¿Qué mecanismos de protección existen para evitar accesos no autorizados?
+    
+    \vspace{0.2cm}
+    \textit{Respuesta:Normalmente no, en mips 32 el rango de direcciones que corresponden a entrada/salida solo son accesibles en modo kernel, en modo usuario causan una excepcion de error en direccion. Ademas el sistema operativo solo mapea la pagina de un dispositivo a un proceso si le da permiso(como a un driver)}
+    \vspace{1.5cm}
+
+    \item ¿Qué técnicas se pueden emplear para evitar esperas activas innecesarias al interactuar con dispositivos?
+    
+    \vspace{0.2cm}
+    \textit{Respuesta:Principalmente interrupciones (el dispositivo avisa a la CPU), DMA (transferencia sin intervención de la CPU) y que el SO bloquee el hilo mientras espera. También: polling con timeout, polling periódico con un temporizador, instrucciones de espera de bajo consumo y buffers/FIFO para atender datos por lotes.}
+    \vspace{1.5cm}
+
+    \item Análisis y Discusión de los Resultados
+    
+    \vspace{0.2cm}
+    \textit{Respuesta:En el primer ejercicio se tomo la decicion de que InicializarSensorLuz devuelva un valor para indicar si se hizo la inicializacion correctamente del registro luzcontrol. luego para el procedimiento LeerLuminosidad, se tomo la decision de que en caso de que luzcontrol no haya sido inicializada se considera una lectura correcta pero retorna un valor negativo(esto porque 0 se considera un valor valido y se podria confundir con que la lectura fue hecha correctamente). Luego para el 2do ejercicio aunque el enunciado no lo indica se tomo consideracion para casos donde tensioncontrol pueda terminar valiendo distinto de 0 o 1(los unicos valores que por defecto deberia tener). Ya para finalizar se puede concluir que la mayor limitante para los ejercicios hechos es que los registros que sondean deben ser cambiados de forma manual para poder determinar si se comportan correctamente los programas.}
+    \vspace{2cm}
+
+\end{enumerate}
+
+\end{document}
